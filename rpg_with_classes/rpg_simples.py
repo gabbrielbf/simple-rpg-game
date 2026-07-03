@@ -33,6 +33,12 @@ class Personagem:
             self.__vida = 0
         return self.__vida
     
+    def reduzir_mana(self, quantidade):
+        if self.__mana >= quantidade:
+            self.__mana -= quantidade
+            return True
+        return False
+    
 
 class Protagonista(Personagem):
     def __init__(self, nome, vida, nivel, mana, habilidade):
@@ -45,11 +51,15 @@ class Protagonista(Personagem):
     def get_habilidade(self):
         return self.__habilidade
     
-    def ataque_especial(self, alvo):
-        dano = self.get_nivel() * 6 # <- Triplo de dano no ataque especial
-        alvo.receber_dano(dano)
-        
-        print(f'{self.get_nome()} usou a hailidade especial {self.get_habilidade()} em {alvo.get_nome()} gastando 8 de Mana causando {dano} de dano!')
+    def hab_especial(self, alvo):
+        custo = 8
+        if self.reduzir_mana(custo):
+            dano = self.get_nivel() * 6
+            alvo.receber_dano(dano)
+            print(f'{self.get_nome()} usou {self.get_habilidade()}! Causou {dano} de dano e gastou {custo} de mana.')
+            return True # <- Retorna e atualiza o valor da mana em tempo real
+        else:
+            return False # <- Sem mana, não retorna nada
 
 
 class Vilao(Personagem):
@@ -85,16 +95,23 @@ class Play:
 
             input('Press ENTER...')
             print('1 - Ataque normal')
-            print('2 - Ataque especial [- 8 de MANA]')
+            print('2 - Ataque especial [8 de MANA]')
             opcao = int(input('Digite aqui -> '))
             
             match opcao:
                 case 1:
                     self.protagonista.atacar(self.vilao)
                 case 2:
-                    pass
+                    if not self.protagonista.hab_especial(self.vilao):
+                        print('\nVocê não tem mana o suficiente! Usando ataque normal neste turno.')
+                        self.protagonista.atacar(self.vilao)
                 case _:
                     print('Opção indisponível')
+
+            # Vilao atacando o protagonista
+            if self.vilao.get_vida() > 0:
+                self.vilao.atacar(self.protagonista)
+
         if self.protagonista.get_vida() > 0:
             print(f'\nParabéns {self.protagonista.get_nome()} você venceu!\n')
         else:
