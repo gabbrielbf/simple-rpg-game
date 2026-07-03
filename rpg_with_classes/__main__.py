@@ -5,7 +5,6 @@ def main():
     """ Instânciando e iniciando o jogo """
     jogo = Play()
     jogo.inciar_batalha()
-    
     return
 
 if __name__ == '__main__':

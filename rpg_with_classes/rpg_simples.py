@@ -44,6 +44,12 @@ class Protagonista(Personagem):
 
     def get_habilidade(self):
         return self.__habilidade
+    
+    def ataque_especial(self, alvo):
+        dano = self.get_nivel() * 6 # <- Triplo de dano no ataque especial
+        alvo.receber_dano(dano)
+        
+        print(f'{self.get_nome()} usou a hailidade especial {self.get_habilidade()} em {alvo.get_nome()} gastando 8 de Mana causando {dano} de dano!')
 
 
 class Vilao(Personagem):
@@ -79,7 +85,7 @@ class Play:
 
             input('Press ENTER...')
             print('1 - Ataque normal')
-            print('2 - Ataque especial [- 5 de MANA]')
+            print('2 - Ataque especial [- 8 de MANA]')
             opcao = int(input('Digite aqui -> '))
             
             match opcao:
