@@ -21,6 +21,17 @@ class Personagem:
     
     def exibir_dados(self):
         return f'- Nome: {self.get_nome()}\n- Vida: {self.get_vida()}\n- Nivel: {self.get_nivel()}\n- Mana: {self.get_mana()}'
+
+    def atacar(self, alvo):
+        dano = self.__nivel * 2
+        alvo.receber_dano(dano)
+        print(f'{self.get_nome()} atacou {alvo.get_nome()} e causou {dano} de dano!')
+
+    def receber_dano(self, dano):
+        self.__vida -= dano
+        if self.__vida <= 0:
+            self.__vida = 0
+        return self.__vida
     
 
 class Protagonista(Personagem):
@@ -68,6 +79,18 @@ class Play:
 
             input('Press ENTER...')
             print('1 - Ataque normal')
-            print('2 - Ataque especial')
-            opcao = input('Digite aqui -> ')
+            print('2 - Ataque especial [- 5 de MANA]')
+            opcao = int(input('Digite aqui -> '))
             
+            match opcao:
+                case 1:
+                    self.protagonista.atacar(self.vilao)
+                case 2:
+                    pass
+                case _:
+                    print('Opção indisponível')
+        if self.protagonista.get_vida() > 0:
+            print(f'\nParabéns {self.protagonista.get_nome()} você venceu!\n')
+        else:
+            print(f'\nO vilão {self.vilao.get_nome()} venceu.\nVocê foi derrotado.\n')
+
