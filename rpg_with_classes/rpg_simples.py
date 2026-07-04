@@ -1,3 +1,5 @@
+import random
+
 class Personagem:
     """ Classe responsável por 
     instânciar e definir os personagens """
@@ -23,7 +25,7 @@ class Personagem:
         return f'- Nome: {self.get_nome()}\n- Vida: {self.get_vida()}\n- Nivel: {self.get_nivel()}\n- Mana: {self.get_mana()}'
 
     def atacar(self, alvo):
-        dano = self.__nivel * 2
+        dano = random.randint(self.get_nivel() * 3, self.get_nivel() * 5)
         alvo.receber_dano(dano)
         print(f'{self.get_nome()} atacou {alvo.get_nome()} e causou {dano} de dano!')
 
@@ -54,7 +56,7 @@ class Protagonista(Personagem):
     def hab_especial(self, alvo):
         custo = 8
         if self.reduzir_mana(custo):
-            dano = self.get_nivel() * 6
+            dano = random.randint(self.get_nivel() * 6, self.get_nivel() * 8)
             alvo.receber_dano(dano)
             print(f'{self.get_nome()} usou {self.get_habilidade()}! Causou {dano} de dano e gastou {custo} de mana.')
             return True # <- Retorna e atualiza o valor da mana em tempo real
